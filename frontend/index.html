@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastelería Artesanal - Asistente Consultivo IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="chat-header">
+      <div class="brand">
+        <div class="avatar-container">
+          <span class="avatar-icon">🎂</span>
+          <span class="status-indicator online" title="En línea"></span>
+        </div>
+        <div class="brand-info">
+          <h1>Pastelería Dulce Deleite</h1>
+          <p class="subtitle">Asistente Consultivo de Repostería & Seguridad Alimentaria</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btnVerPedidos" class="btn-secondary" title="Ver pedidos registrados en cocina">
+          📋 Pedidos en Cocina
+        </button>
+      </div>
+    </header>
+
+    <!-- Barra de sugerencias rapidas -->
+    <div class="quick-prompts-bar">
+      <button class="pill" data-prompt="Busco un pastel sin gluten y sin frutos secos para 10 personas">🌾 Sin Gluten & Nueces</button>
+      <button class="pill" data-prompt="¿Qué opciones tienen libres de lactosa y con frutas?">🍓 Sin Lactosa & Frutal</button>
+      <button class="pill" data-prompt="Quiero algo chocolatoso e intenso, 100% vegano">🍫 Opción Vegana</button>
+      <button class="pill" data-prompt="¿Tienen disponibilidad en cocina para este sábado?">📅 Cupo para el Sábado</button>
+    </div>
+
+    <!-- Ventana de Mensajes -->
+    <main class="chat-window" id="chatMessages">
+      <div class="message bot">
+        <div class="msg-avatar">👩‍🍳</div>
+        <div class="msg-bubble">
+          <p>¡Hola! Bienvenido a <strong>Dulce Deleite</strong>. Soy tu asesora virtual de repostería artesanal.</p>
+          <p>Dime qué sabor buscas o qué ocasión celebras. <strong>Si tú o tus invitados tienen restricciones o alergias (gluten, lactosa, huevo, frutos secos)</strong>, indícalo y filtraremos estrictamente las recetas para garantizar tu seguridad.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Indicador de escribiendo -->
+    <div class="typing-indicator-container" id="typingIndicator">
+      <span>La asesora está consultando el catálogo y la cocina...</span>
+      <div class="dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- Barra de Entrada de Texto -->
+    <footer class="chat-input-area">
+      <form id="chatForm">
+        <input 
+          type="text" 
+          id="userInput" 
+          placeholder="Escribe tu consulta... (Ej: torta cítrica sin gluten para 12 personas)" 
+          autocomplete="off"
+          required
+        >
+        <button type="submit" id="sendBtn" title="Enviar mensaje">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+        </button>
+      </form>
+    </footer>
+  </div>
+
+  <!-- Modal para confirmar y formalizar pedido -->
+  <div class="modal-backdrop" id="pedidoModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Formalizar Pedido en Cocina</h3>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <form id="formConfirmarPedido">
+        <div class="form-group">
+          <label for="modalPastel">Pastel Seleccionado</label>
+          <input type="text" id="modalPastel" required readonly>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="modalFecha">Fecha de Entrega</label>
+            <input type="date" id="modalFecha" required>
+          </div>
+          <div class="form-group">
+            <label for="modalPorciones">Porciones</label>
+            <input type="number" id="modalPorciones" min="1" max="50" value="10" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="modalNombre">Tu Nombre Completo</label>
+            <input type="text" id="modalNombre" placeholder="Ej. Camila Morales" required>
+          </div>
+          <div class="form-group">
+            <label for="modalTelefono">Teléfono de Contacto</label>
+            <input type="tel" id="modalTelefono" placeholder="+57 300 000 0000" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="modalEmail">Correo Electrónico (Opcional)</label>
+          <input type="email" id="modalEmail" placeholder="cliente@correo.com">
+        </div>
+        <div class="form-group">
+          <label for="modalRestricciones">Alergias o Restricciones a Recordar en Cocina</label>
+          <input type="text" id="modalRestricciones" placeholder="Ej: Sin gluten ni trazas de nueces">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" id="cancelModal">Cancelar</button>
+          <button type="submit" class="btn-primary" id="btnConfirmarPedido">Confirmar y Reservar Cupo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para ver pedidos en cocina -->
+  <div class="modal-backdrop" id="pedidosCocinaModal">
+    <div class="modal-card large">
+      <div class="modal-header">
+        <h3>📋 Tablero de Pedidos en Cocina</h3>
+        <button class="close-btn" id="closeCocinaModal">&times;</button>
+      </div>
+      <div class="modal-body" id="cocinaTableContainer">
+        <p>Cargando pedidos...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

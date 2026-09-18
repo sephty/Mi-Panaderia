@@ -1,0 +1,564 @@
+{
+  "name": "Chatbot RAG Pasteleria Artesanal",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        208
+      ],
+      "id": "9d2e30da-4c83-4011-8b63-b07e8404b83e",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pasteles = [\n  {\n    id: 1,\n    nombre: 'Tarta Selva Negra Artesanal',\n    descripcion: 'Bizcochuelo humedo de chocolate amargo embebido en licor de cerezas kirsch, crema chantilly fresca y cerezas acidas maceradas, con virutas de chocolate oscuro 70%.',\n    perfil_sabor: 'Chocolate profundo, licoroso, cereza acida y crema fresca suave',\n    textura: 'Esponjoso, humedo y cremoso',\n    porciones_min: 10,\n    porciones_max: 15,\n    precio_cop: 85000,\n    alergenos: ['gluten', 'lactosa', 'huevo'],\n    vegano: false\n  },\n  {\n    id: 2,\n    nombre: 'Cheesecake de Frutos Rojos Sin Gluten',\n    descripcion: 'Base crocante de harina de almendras y avena sin gluten, crema horneada de queso mascarpone y ricotta, con coulis artesanal de moras, frambuesas y arandanos silvestres.',\n    perfil_sabor: 'Cremoso, notas sutiles a vainilla, contraste acido y fresco de frutos rojos',\n    textura: 'Sedoso, denso y base crocante',\n    porciones_min: 8,\n    porciones_max: 12,\n    precio_cop: 95000,\n    alergenos: ['lactosa', 'huevo', 'frutos_secos'],\n    vegano: false\n  },\n  {\n    id: 3,\n    nombre: 'Pastel Citrico de Limon y Amapola (Vegano & Libre de Gluten)',\n    descripcion: 'Bizcocho horneado a base de harina de arroz y fecula de tapioca, con ralladura de limones organicos y semillas de amapola crocantes, cubierto con glaseado real de coco y limon.',\n    perfil_sabor: 'Citrico vibrante, refrescante y dulzor natural equilibrado',\n    textura: 'Tierno, aireado y toque crocante de amapola',\n    porciones_min: 6,\n    porciones_max: 10,\n    precio_cop: 78000,\n    alergenos: [],\n    vegano: true\n  },\n  {\n    id: 4,\n    nombre: 'Torta Marmoleada Tradicional de Vainilla Bourbon y Chocolate',\n    descripcion: 'Elaborada con harina de trigo artesanal, mantequilla de pastoreo y vainilla de Papantla entrelazada con remolinos de cacao puro colombiano.',\n    perfil_sabor: 'Mantequilla tostada, vainilla dulce y cacao suave',\n    textura: 'Miga densa pero suave, ideal para acompanar cafe',\n    porciones_min: 12,\n    porciones_max: 16,\n    precio_cop: 65000,\n    alergenos: ['gluten', 'lactosa', 'huevo'],\n    vegano: false\n  },\n  {\n    id: 5,\n    nombre: 'Tarta de Manzana Caramelizada y Canela (Sin Lactosa)',\n    descripcion: 'Masa quebrada crujiente con aceite de coco virgen (sin derivados lacteos), laminas de manzana granny smith con canela de Ceylan y caramelo rubio artesanal.',\n    perfil_sabor: 'Manzana caramelizada, especiado calido y acidez equilibrada',\n    textura: 'Crocante en bordes con corazon tierno y jugoso',\n    porciones_min: 8,\n    porciones_max: 10,\n    precio_cop: 72000,\n    alergenos: ['gluten', 'huevo'],\n    vegano: false\n  },\n  {\n    id: 6,\n    nombre: 'Pastel de Zanahoria Especiada y Nuez de Nogal',\n    descripcion: 'Bizcocho humedo de zanahoria fresca rallada, canela, nuez moscada y jengibre, con trozos crujientes de nuez de nogal y frosting clasico de queso crema.',\n    perfil_sabor: 'Especiado calido, dulce terroso de zanahoria y acidez fresca del frosting',\n    textura: 'Muy jugoso con tropiezos crocantes de nueces',\n    porciones_min: 10,\n    porciones_max: 14,\n    precio_cop: 88000,\n    alergenos: ['gluten', 'lactosa', 'huevo', 'frutos_secos'],\n    vegano: false\n  },\n  {\n    id: 7,\n    nombre: 'Entremet de Maracuya y Mango Tropical (Sin Frutos Secos)',\n    descripcion: 'Mousse ligera de maracuya colombiano sobre base genovesa clasica y compota de mango tommy maduro con glaseado espejo amarillo.',\n    perfil_sabor: 'Intensamente frutal, exotico, balance acido-dulce',\n    textura: 'Espumoso, aterciopelado que se funde en boca',\n    porciones_min: 8,\n    porciones_max: 12,\n    precio_cop: 92000,\n    alergenos: ['gluten', 'lactosa', 'huevo'],\n    vegano: false\n  },\n  {\n    id: 8,\n    nombre: 'Brownie Fudge 100% Vegano de Aguacate y Cacao (Sin Nueces)',\n    descripcion: 'Brownie denso y extra chocolatoso sin huevo ni lacteos, emulsionado con aguacate hass y cacao puro al 80%.',\n    perfil_sabor: 'Chocolate intenso, semiamargo, sin sabor residual a aguacate',\n    textura: 'Fudge denso, pegajoso y muy humedo',\n    porciones_min: 6,\n    porciones_max: 8,\n    precio_cop: 60000,\n    alergenos: ['gluten'],\n    vegano: true\n  },\n  {\n    id: 9,\n    nombre: 'Tarta Real de Pistacho y Azahar (Libre de Gluten)',\n    descripcion: 'Masa sable de harina de arroz y maiz, ganache montada de pistacho siciliano puro y aroma sutil de agua de azahar.',\n    perfil_sabor: 'Pistacho tostado, notas florales elegantes y terrosas dulces',\n    textura: 'Cremoso sedoso y base quebradiza',\n    porciones_min: 8,\n    porciones_max: 12,\n    precio_cop: 110000,\n    alergenos: ['lactosa', 'huevo', 'frutos_secos'],\n    vegano: false\n  },\n  {\n    id: 10,\n    nombre: 'Torta Red Velvet Clasica de Terciopelo',\n    descripcion: 'Capas aterciopeladas de bizcocho con toques de cacao y suero de leche, decoradas con frosting suave de queso crema y limon.',\n    perfil_sabor: 'Ligeramente chocolatoso, suave acidez lactea y toque avainillado',\n    textura: 'Miga ultra suave aterciopelada y crema untuosa',\n    porciones_min: 12,\n    porciones_max: 18,\n    precio_cop: 90000,\n    alergenos: ['gluten', 'lactosa', 'huevo'],\n    vegano: false\n  }\n];\n\npasteles.forEach(p => {\n  const al = p.alergenos.length ? p.alergenos.join(', ') : 'Ninguno';\n  p.texto_busqueda = `${p.nombre}. ${p.descripcion} Sabor: ${p.perfil_sabor}. Textura: ${p.textura}. Alergenos: ${al}.`;\n});\n\nreturn [{\n  json: {\n    qdrant_url: 'http://panaderia-qdrant:6333',\n    coleccion: 'pasteleria',\n    modelo_embedding: 'openai/text-embedding-3-small',\n    pasteles\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        208
+      ],
+      "id": "c446a2b4-5cab-4c66-8702-0ba321a2f701",
+      "name": "Preparar Pasteles"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/embeddings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ model: $json.modelo_embedding, input: $json.pasteles.map(p => p.texto_busqueda), encoding_format: 'float' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        160,
+        208
+      ],
+      "id": "f24f7cda-ceda-4bd2-b3ad-ed3d3574a377",
+      "name": "Generar Embeddings1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const c = $('Preparar Pasteles').first().json;\nconst r = $input.first().json;\nif (!r.data?.length) throw new Error('Sin embeddings recibidos de OpenRouter');\n\nconst points = c.pasteles.map((x, i) => ({\n  id: x.id,\n  vector: r.data[i].embedding,\n  payload: {\n    nombre: x.nombre,\n    descripcion: x.descripcion,\n    perfil_sabor: x.perfil_sabor,\n    textura: x.textura,\n    porciones_min: x.porciones_min,\n    porciones_max: x.porciones_max,\n    precio_cop: x.precio_cop,\n    alergenos: x.alergenos,\n    vegano: x.vegano\n  }\n}));\n\nreturn [{\n  json: {\n    ...c,\n    vector_size: r.data[0].embedding.length,\n    points\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        208
+      ],
+      "id": "6f0760c2-cdd2-4ae2-bdfd-ab4f92399082",
+      "name": "Preparar puntos"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.qdrant_url + '/collections/' + $json.coleccion }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({\n  \"vectors\": {\n    \"size\": Number($json.vector_size),\n    \"distance\": \"Cosine\"\n  }\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        592,
+        208
+      ],
+      "id": "7737c48f-b0e9-432e-9eef-9b0460e2673a",
+      "name": "Crear Coleccion1"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('Preparar puntos').item.json.qdrant_url + '/collections/' + $('Preparar puntos').item.json.coleccion + '/index' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ \"field_name\": \"alergenos\", \"field_schema\": \"keyword\" }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        816,
+        208
+      ],
+      "id": "88e61752-84e2-4d6f-aad2-b1acfa1f333c",
+      "name": "Crear Indice Alergenos"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('Preparar puntos').item.json.qdrant_url + '/collections/' + $('Preparar puntos').item.json.coleccion + '/points?wait=true' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({\n  points: $('Preparar puntos').item.json.points\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1040,
+        208
+      ],
+      "id": "40e54726-bd48-4d82-ba1a-e42862e0e508",
+      "name": "Guardar en Qdrant"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pasteleria-chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -528,
+        672
+      ],
+      "id": "edb52076-8c9d-40ec-9c11-39be3dd7e0b0",
+      "name": "Webhook Chat",
+      "webhookId": "333fb514-90eb-4ea1-a2f1-d0d95afbcf65"
+    },
+    {
+      "parameters": {
+        "jsCode": "const b = $json.body ?? $json;\nconst mensaje = (b.mensaje ?? b.pregunta ?? '').trim();\nif (!mensaje) throw new Error('Falta el mensaje o pregunta del usuario');\n\n// Deteccion automatica de restricciones de seguridad alimentaria\nconst lower = mensaje.toLowerCase();\nconst alergenosExcluir = [];\n\nif (lower.includes('gluten') || lower.includes('celiaco') || lower.includes('celíaco') || lower.includes('sin harina')) {\n  alergenosExcluir.push('gluten');\n}\nif (lower.includes('lactosa') || lower.includes('lacteo') || lower.includes('lácteo') || lower.includes('sin leche')) {\n  alergenosExcluir.push('lactosa');\n}\nif (lower.includes('huevo') || lower.includes('sin huevo')) {\n  alergenosExcluir.push('huevo');\n}\nif (lower.includes('nuez') || lower.includes('nueces') || lower.includes('frutos secos') || lower.includes('almendra') || lower.includes('pistacho')) {\n  alergenosExcluir.push('frutos_secos');\n}\n\n// Construccion del filtro determinista para Qdrant (must_not)\nlet filter = null;\nif (alergenosExcluir.length > 0) {\n  filter = {\n    must_not: alergenosExcluir.map(al => ({\n      key: 'alergenos',\n      match: { value: al }\n    }))\n  };\n}\n\nreturn [{\n  json: {\n    pregunta: mensaje,\n    sessionId: b.sessionId ?? 'default_session',\n    alergenos_excluidos: alergenosExcluir,\n    filter,\n    qdrant_url: 'http://panaderia-qdrant:6333',\n    coleccion: 'pasteleria',\n    modelo_embedding: 'openai/text-embedding-3-small',\n    limite: 4\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        672
+      ],
+      "id": "f237054f-80bb-457c-9b90-53b317876833",
+      "name": "Prepara Pregunta & Filtros"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/embeddings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ model: $json.modelo_embedding, input: $json.pregunta, encoding_format: 'float' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -128,
+        672
+      ],
+      "id": "e6e533a1-867c-4da1-99c1-487a07785cef",
+      "name": "Embedding Pregunta"
+    },
+    {
+      "parameters": {
+        "jsCode": "const c = $('Prepara Pregunta & Filtros').first().json;\nconst r = $input.first().json;\nif (!r.data?.length) throw new Error('No se pudo generar embedding para la consulta');\nreturn [{\n  json: {\n    ...c,\n    vector: r.data[0].embedding\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        672
+      ],
+      "id": "eee7a4f8-3601-4cc6-bf7e-4336ad8776a5",
+      "name": "Preparar Consulta Qdrant"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.qdrant_url + '/collections/' + $json.coleccion + '/points/query' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({\n  query: $json.vector,\n  filter: $json.filter ?? undefined,\n  limit: $json.limite,\n  with_payload: true,\n  with_vector: false\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        272,
+        672
+      ],
+      "id": "834b2668-c7cc-4c42-b027-177967fa3c4e",
+      "name": "Buscar en Qdrant (Filtro Determinista)"
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $('Prepara Pregunta & Filtros').first().json;\nconst respuesta = $input.first().json;\nconst puntos = respuesta.result?.points ?? respuesta.result ?? [];\n\nif (!Array.isArray(puntos) || puntos.length === 0) {\n  return [{\n    json: {\n      pregunta: config.pregunta,\n      alergenos_excluidos: config.alergenos_excluidos,\n      mejor_resultado: null,\n      pasteles: []\n    }\n  }];\n}\n\nconst pasteles = puntos.map((p, idx) => ({\n  posicion: idx + 1,\n  id: p.id,\n  nombre: p.payload?.nombre ?? 'Pastel artesanal',\n  descripcion: p.payload?.descripcion ?? '',\n  perfil_sabor: p.payload?.perfil_sabor ?? '',\n  textura: p.payload?.textura ?? '',\n  porciones_min: p.payload?.porciones_min ?? 8,\n  porciones_max: p.payload?.porciones_max ?? 12,\n  precio_cop: p.payload?.precio_cop ?? 80000,\n  alergenos: p.payload?.alergenos ?? [],\n  vegano: Boolean(p.payload?.vegano),\n  score: Number(p.score ?? 0)\n}));\n\nreturn [{\n  json: {\n    pregunta: config.pregunta,\n    alergenos_excluidos: config.alergenos_excluidos,\n    mejor_resultado: pasteles[0] ?? null,\n    pasteles\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        672
+      ],
+      "id": "104235f9-52bc-481e-95d9-e6f3103eedd8",
+      "name": "Formatear Pasteles"
+    },
+    {
+      "parameters": {
+        "jsCode": "const { pregunta, pasteles, alergenos_excluidos } = $json;\n\nif (!pasteles || pasteles.length === 0) {\n  return [{\n    json: {\n      pregunta,\n      pasteles: [],\n      prompt: `El cliente preguntó: \"${pregunta}\", pero tras aplicar el filtro de seguridad de alérgenos (${alergenos_excluidos.join(', ') || 'ninguno'}) no se encontraron pasteles compatibles. Pide disculpas amablemente y ofrece consultar si el chef puede elaborar una receta personalizada.`\n    }\n  }];\n}\n\nconst contexto = pasteles.map((p, idx) => {\n  const al = p.alergenos.length > 0 ? p.alergenos.join(', ') : 'Ninguno (Libre de alérgenos principales)';\n  return `Pastel #${idx + 1}: ${p.nombre}\n- Descripción: ${p.descripcion}\n- Perfil de sabor: ${p.perfil_sabor} | Textura: ${p.textura}\n- Porciones: ${p.porciones_min} a ${p.porciones_max}\n- Precio: $${p.precio_cop.toLocaleString('es-CO')} COP\n- Alérgenos: [${al}]\n- Vegano: ${p.vegano ? 'Sí' : 'No'}`;\n}).join('\\n\\n');\n\nconst prompt = `Eres una asesora experta y amable de 'Pastelería Dulce Deleite'.\nTu misión es recomendar los pasteles recuperados garantizando la seguridad alimentaria del cliente.\n\nREGLAS DE RESPUESTA:\n1. Responde de forma cálida, persuasiva y artesanal.\n2. Recomienda 1 o 2 de las mejores opciones del contexto según lo que pidió el usuario.\n3. Destaca por qué encaja con su gusto y menciona que sus alérgenos han sido verificados y excluidos de forma segura.\n4. Invita al cliente a hacer clic en 'Reservar' en la tarjeta para confirmar la fecha y apartar su cupo en cocina.\n\nCONTEXTO DE PASTELES DISPONIBLES:\n${contexto}\n\nCONSULTA DEL CLIENTE:\n${pregunta}`;\n\nreturn [{\n  json: {\n    pregunta,\n    contexto,\n    prompt,\n    pasteles\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        672
+      ],
+      "id": "84eb70a8-339e-452b-ab4e-46e201656615",
+      "name": "Preparar Contexto Asesora"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "=raw",
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({\n  model: 'openai/gpt-oss-20b',\n  messages: [\n    { role: 'system', content: 'Eres una asesora de alta repostería artesanal experta en seguridad alimentaria y recomendaciones de sabor.' },\n    { role: 'user', content: $json.prompt }\n  ],\n  temperature: 0.3\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        880,
+        672
+      ],
+      "id": "20daada7-a0b6-4953-b713-b74b9fb2b767",
+      "name": "Generar Respuesta LLM"
+    },
+    {
+      "parameters": {
+        "jsCode": "const respuestaLLM = $input.first().json;\nconst datos = $('Preparar Contexto Asesora').first().json;\n\nconst texto = respuestaLLM.choices?.[0]?.message?.content;\nif (!texto) throw new Error('OpenRouter no devolvió una respuesta válida.');\n\nreturn [{\n  json: {\n    pregunta: datos.pregunta,\n    texto,\n    pasteles: datos.pasteles\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        672
+      ],
+      "id": "5f1963a2-6bc7-4aad-b801-81a5abcde8f0",
+      "name": "Procesar Respuesta Chat"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1280,
+        672
+      ],
+      "id": "85408aa5-b039-43c9-808b-60c4c9033ed3",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "\n### INICIALIZAR LA BASE DE DATOS DE QDRANT, USANDO OPENAI EMBEDDINGS\n",
+        "height": 384,
+        "width": 1648,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        80
+      ],
+      "id": "4db3b953-24aa-4194-ac1f-c895f29bd6eb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n### SISTEMA PRINCIPAL DEL BOT USANDO RAG\n\n\n",
+        "height": 384,
+        "width": 2064,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        544
+      ],
+      "id": "2d366744-fc4b-4e5d-9fe1-f1a96121c96c",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Preparar Pasteles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Pasteles": {
+      "main": [
+        [
+          {
+            "node": "Generar Embeddings1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Embeddings1": {
+      "main": [
+        [
+          {
+            "node": "Preparar puntos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar puntos": {
+      "main": [
+        [
+          {
+            "node": "Crear Coleccion1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Coleccion1": {
+      "main": [
+        [
+          {
+            "node": "Crear Indice Alergenos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Indice Alergenos": {
+      "main": [
+        [
+          {
+            "node": "Guardar en Qdrant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Chat": {
+      "main": [
+        [
+          {
+            "node": "Prepara Pregunta & Filtros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepara Pregunta & Filtros": {
+      "main": [
+        [
+          {
+            "node": "Embedding Pregunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embedding Pregunta": {
+      "main": [
+        [
+          {
+            "node": "Preparar Consulta Qdrant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Consulta Qdrant": {
+      "main": [
+        [
+          {
+            "node": "Buscar en Qdrant (Filtro Determinista)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar en Qdrant (Filtro Determinista)": {
+      "main": [
+        [
+          {
+            "node": "Formatear Pasteles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear Pasteles": {
+      "main": [
+        [
+          {
+            "node": "Preparar Contexto Asesora",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Contexto Asesora": {
+      "main": [
+        [
+          {
+            "node": "Generar Respuesta LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Respuesta LLM": {
+      "main": [
+        [
+          {
+            "node": "Procesar Respuesta Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesar Respuesta Chat": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9af0925d-117b-439c-b1bf-4379410a0c9a",
+  "meta": {
+    "instanceId": "5e178e1de6857b6a7faf535a8b0a74af83d930683d763dd9ee064bf9fcf80faa"
+  },
+  "nodeGroups": [],
+  "id": "Ya1TtPyoeLwTf848",
+  "tags": []
+}
