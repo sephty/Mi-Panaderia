@@ -73,7 +73,8 @@ docker compose up -d
 1. Abre tu instancia de **n8n** (`http://localhost:5678`).
 2. Haz clic en **"Import from File"** y selecciona:
    `qdrant/Chatbot RAG Pasteleria Artesanal.json` (o copia el contenido del archivo y pégalo con `Ctrl + V` en el lienzo).
-3. Activa el flujo (botón **Active** arriba a la derecha).
+3. Configura los links de tu backend y la llave de tu openAI.
+4. Activa el flujo (botón **Active** arriba a la derecha).
    - Webhook activo en: `http://localhost:5678/webhook/pasteleria-chat`
 
 ---
